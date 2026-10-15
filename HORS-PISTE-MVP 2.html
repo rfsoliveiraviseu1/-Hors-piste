@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#172d29">
+<title>HORS-PISTE — Le sport sans routine</title>
+<style>
+:root{--forest:#172d29;--lime:#d7f27b;--paper:#f6f6ef;--ink:#17231f;--muted:#65716a;--line:#e0e6dc;--white:#fff;--orange:#f1b36b}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:var(--forest);color:white;padding:24px 18px 34px;border-radius:0 0 28px 28px}.wrap{max-width:920px;margin:auto}.brand{display:flex;gap:10px;align-items:center;font-weight:900;letter-spacing:.08em}.logo{height:42px;width:42px;border-radius:14px;background:var(--lime);color:var(--forest);display:grid;place-items:center;font-size:24px}
+header h1{font-size:clamp(32px,7vw,52px);line-height:1.02;letter-spacing:-.04em;max-width:680px;margin:28px 0 12px}header p{color:#dce7df;max-width:600px;margin:0}.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:850;color:#5a7254}
+main{max-width:920px;margin:auto;padding:18px}.panel{background:white;border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:14px}.setup{margin-top:-4px}.section-title{font-size:23px;margin:0 0 6px}.muted{color:var(--muted)}.small{font-size:13px}.label{font-size:13px;font-weight:800;display:block;margin:17px 0 8px}
+.choices{display:flex;gap:8px;flex-wrap:wrap}.choice{font:inherit;font-weight:700;background:white;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:10px 14px;cursor:pointer}.choice.active{background:var(--lime);border-color:#9dbf50;color:#20331b}
+button{font:inherit;font-weight:800;border:0;border-radius:13px;padding:13px 16px;background:var(--forest);color:white;cursor:pointer}.button-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.secondary{background:#edf1e8;color:var(--forest);border:1px solid var(--line)}button:disabled{opacity:.45;cursor:not-allowed}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.stat{background:white;border:1px solid var(--line);border-radius:16px;padding:13px}.stat span{font-size:12px;color:var(--muted);display:block}.stat strong{font-size:25px}
+.mission{background:var(--forest);color:white;border-radius:22px;padding:22px;margin-bottom:14px}.mission .eyebrow{color:var(--lime)}.mission h2{font-size:clamp(25px,5vw,36px);line-height:1.1;margin:8px 0}.mission p{color:#dce7df}.tag{display:inline-block;padding:5px 9px;border-radius:999px;background:#314941;color:#e8f6c3;font-size:12px;font-weight:800;margin:0 5px 5px 0}.steps{display:grid;gap:10px;margin:16px 0}.step{background:#243d35;border-radius:14px;padding:13px;display:flex;gap:12px;align-items:flex-start}.step b{background:var(--lime);color:var(--forest);border-radius:10px;width:30px;height:30px;flex:none;display:grid;place-items:center}.step p{margin:0}.step strong{display:block;color:white;margin-bottom:3px}
+.progress{height:9px;border-radius:99px;background:#e7ebdf;overflow:hidden;margin:12px 0}.progress span{display:block;height:100%;background:#8ab849;width:0;transition:width .2s}.timer{font-size:34px;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:.04em}.timer-card{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.timer-actions{display:flex;gap:8px;flex-wrap:wrap}.hidden{display:none!important}
+.history-item{padding:12px 0;border-bottom:1px solid var(--line)}.history-item:last-child{border:0}.history-item strong{display:block}.badge{display:inline-block;font-size:12px;border-radius:99px;padding:4px 8px;background:#edf3e6;color:#385638;font-weight:800}
+footer{max-width:920px;margin:auto;padding:12px 18px 30px;text-align:center;color:var(--muted);font-size:12px}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#17231f;color:white;padding:12px 16px;border-radius:12px;max-width:90%;box-shadow:0 6px 24px #0002}
+@media(max-width:560px){main{padding:14px}.panel{padding:15px}.stats{gap:7px}.stat{padding:10px}.stat strong{font-size:22px}header{padding:20px 16px 30px}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+ <div class="brand"><span class="logo">↗</span><span>HORS-PISTE</span></div>
+ <h1>Le sport sans routine.</h1>
+ <p>Des missions courtes qui bousculent tes habitudes : bouge, coordonne, explore. Choisis ton temps et ton niveau, puis lance-toi.</p>
+</div></header>
+<main>
+ <div class="stats">
+  <div class="stat"><span>Points gagnés</span><strong id="points">0</strong></div>
+  <div class="stat"><span>Missions terminées</span><strong id="done">0</strong></div>
+  <div class="stat"><span>Série actuelle</span><strong id="streak">0 jour</strong></div>
+ </div>
+ <section id="config" class="panel setup">
+  <div class="eyebrow">Prépare ta mission</div><h2 class="section-title">Quel est ton terrain de jeu ?</h2>
+  <p class="muted">Génère un défi adapté à ton temps, ton niveau et ton équipement.</p>
+  <span class="label">Durée</span><div class="choices" data-group="duration">
+   <button class="choice active" data-value="5">5 minutes</button><button class="choice" data-value="10">10 minutes</button><button class="choice" data-value="15">15 minutes</button>
+  </div>
+  <span class="label">Niveau</span><div class="choices" data-group="level">
+   <button class="choice" data-value="Débutant">Débutant</button><button class="choice active" data-value="Intermédiaire">Intermédiaire</button><button class="choice" data-value="Avancé">Avancé</button>
+  </div>
+  <span class="label">Matériel</span><div class="choices" data-group="gear">
+   <button class="choice active" data-value="Aucun">Sans matériel</button><button class="choice" data-value="Haltères">Haltères</button><button class="choice" data-value="Salle">Salle équipée</button>
+  </div>
+  <span class="label">Ce que tu veux travailler</span><div class="choices" data-group="goal">
+   <button class="choice active" data-value="Surprise">Surprise-moi</button><button class="choice" data-value="Agilité">Agilité</button><button class="choice" data-value="Force">Force</button><button class="choice" data-value="Cardio">Cardio</button><button class="choice" data-value="Équilibre">Équilibre</button>
+  </div>
+  <div class="button-row"><button id="generate">✦ Générer une mission</button><button class="secondary" id="reset">Réinitialiser les scores</button></div>
+ </section>
+
+ <section id="missionArea" class="mission hidden" aria-live="polite">
+  <div class="eyebrow" id="missionMeta">MISSION 01</div><h2 id="missionTitle">Mission</h2><p id="missionIntro"></p>
+  <div id="tags"></div><div class="steps" id="steps"></div>
+  <div class="timer-card">
+   <div><div class="eyebrow">Chronomètre de séance</div><div class="timer" id="clock">05:00</div></div>
+   <div class="timer-actions"><button id="startTimer">▶ Démarrer</button><button id="pauseTimer" class="secondary">Pause</button><button id="restartTimer" class="secondary">Repartir</button></div>
+  </div>
+  <div class="progress"><span id="timerProgress"></span></div>
+  <p class="small" style="margin-bottom:0">Le chronomètre est un outil indicatif. Fais des pauses quand nécessaire.</p>
+  <div class="button-row"><button id="complete">✓ Terminer la mission (+ points)</button><button id="another" class="secondary">Autre mission</button></div>
+ </section>
+
+ <section class="panel">
+  <div class="eyebrow">Comment ça marche</div><h2 class="section-title">Une mission, trois étapes.</h2>
+  <div class="steps" style="color:var(--ink)">
+   <div class="step" style="background:#f0f4e9"><b>1</b><p><strong style="color:var(--ink)">Découvre</strong>Une consigne inattendue pour casser la routine.</p></div>
+   <div class="step" style="background:#f0f4e9"><b>2</b><p><strong style="color:var(--ink)">Adapte</strong>Choisis une intensité compatible avec ton niveau et ton espace.</p></div>
+   <div class="step" style="background:#f0f4e9"><b>3</b><p><strong style="color:var(--ink)">Progresse</strong>Gagne des points de démonstration et garde une trace de tes missions.</p></div>
+  </div>
+  <p class="small muted">Sécurité : échauffe-toi si nécessaire, garde une technique contrôlée et arrête en cas de douleur, vertige ou malaise. Les défis ne remplacent pas un programme adapté à une blessure ou à une condition médicale.</p>
+ </section>
+ <section class="panel">
+  <div class="eyebrow">Ton parcours</div><h2 class="section-title">Historique des missions</h2><div id="history" class="muted">Pas encore de mission terminée. Ta première mission t'attend.</div>
+ </section>
+</main>
+<footer>Prototype HORS-PISTE · Version 0.1 · Les scores sont des points de jeu sans valeur monétaire. Les données restent dans le navigateur de cet appareil.</footer>
+<div id="toast" class="toast hidden" role="status"></div>
+<script>
+const KEY='horsPisteMvpV1';
+const missions=[
+ {title:'Le radar humain',goal:'Agilité',intro:'Réagis à des directions imaginaires. L’objectif est la précision, pas la vitesse maximale.',steps:[['Prépare le terrain','Dégage un petit espace autour de toi. Tiens-toi debout, genoux souples.'],['Active le radar','Pendant 30 secondes, fais un pas dans une direction, reviens au centre, puis change de direction.'],['Ajoute un arrêt','Après chaque déplacement, immobilise-toi deux secondes en gardant l’équilibre.'],['Inverse le jeu','Recommence en changeant l’ordre des directions. Récupère entre les tours.']]},
+ {title:'La mémoire en mouvement',goal:'Coordination',intro:'Mémorise une séquence et reproduis-la. Un défi de coordination qui ne demande aucun matériel.',steps:[['Choisis trois mouvements','Par exemple : pas latéral, toucher le genou opposé, lever les bras.'],['Crée une séquence','Enchaîne les trois mouvements lentement dans l’ordre choisi.'],['Retourne la séquence','Recommence dans l’ordre inverse sans accélérer.'],['Ajoute une variation','Change un seul mouvement et mémorise la nouvelle séquence.']]},
+ {title:'Force sous contrôle',goal:'Force',intro:'Une mini-séance centrée sur la qualité du mouvement. Privilégie une amplitude confortable.',steps:[['Mise en route','Fais quelques mouvements doux des épaules, hanches et chevilles.'],['Squat adapté','Réalise des squats contrôlés vers une chaise si cela t’aide, ou fais des assis-debout.'],['Poussée adaptée','Fais des pompes au mur ou sur un support stable. Avec haltères, tu peux choisir une poussée légère.'],['Contrôle','Termine par un maintien d’équilibre près d’un appui stable. Récupère au besoin.']]},
+ {title:'Le cardio en vagues',goal:'Cardio',intro:'Alterner mouvement et récupération, à une intensité qui permet de garder le contrôle.',steps:[['Démarre doucement','Marche sur place ou fais des pas latéraux pendant 30 secondes.'],['Change de rythme','Augmente légèrement l’allure si tu te sens bien, sans sprinter.'],['Récupère','Ralentis ou marche tranquillement jusqu’à retrouver une respiration confortable.'],['Recommence','Répète le cycle, en adaptant la durée et l’intensité à tes sensations.']]},
+ {title:'L’équilibre tranquille',goal:'Équilibre',intro:'Un défi de stabilité et d’attention. Place-toi près d’un mur ou d’un support stable.',steps:[['Ancrage','Tiens-toi debout, pieds à largeur confortable, et fixe un point devant toi.'],['Transfert','Transfère lentement le poids d’un pied à l’autre sans te précipiter.'],['Équilibre assisté','Si c’est confortable, soulève légèrement un pied en gardant un appui à portée de main.'],['Change de côté','Répète de l’autre côté. Réduis la difficulté si tu vacilles.']]},
+ {title:'La salle autrement',goal:'Force',intro:'Utilise le matériel disponible pour un mini-circuit varié, sans chercher la performance maximale.',steps:[['Choisis une charge légère','Avec haltères, sélectionne une charge que tu maîtrises sans effort excessif.'],['Tirage ou mouvement de bras','Fais quelques répétitions lentes, dos confortable et épaules contrôlées.'],['Assis-debout ou presse légère','Choisis une variante indolore et adaptée à ton expérience.'],['Respire et récupère','Entre les exercices, relâche les épaules et reprends ton souffle.']]},
+ {title:'Les directions secrètes',goal:'Agilité',intro:'Transforme ton espace en mini-parcours imaginaire, sans sauts obligatoires.',steps:[['Définis quatre directions','Avant, arrière, gauche, droite. Garde assez d’espace pour bouger.'],['Déplace-toi','Fais deux pas contrôlés dans une direction puis reviens au centre.'],['Ajoute un signal','Choisis mentalement une direction au hasard avant chaque répétition.'],['Fais le bilan','Essaie de garder une posture stable et une respiration régulière.']]}
+];
+const defaultState={points:0,history:[],lastDay:null,streak:0};
+let state;try{state=JSON.parse(localStorage.getItem(KEY))||structuredClone(defaultState)}catch(e){state={...defaultState}}
+let settings={duration:5,level:'Intermédiaire',gear:'Aucun',goal:'Surprise'};
+let current=null,used=[],remaining=300,total=300,timer=null,running=false,completedCurrent=false;
+function save(){localStorage.setItem(KEY,JSON.stringify(state));renderStats()}
+function renderStats(){document.getElementById('points').textContent=state.points;document.getElementById('done').textContent=state.history.length;document.getElementById('streak').textContent=state.streak+' jour'+(state.streak>1?'s':'');renderHistory()}
+function renderHistory(){const el=document.getElementById('history');if(!state.history.length){el.textContent='Pas encore de mission terminée. Ta première mission t’attend.';el.className='muted';return}el.className='';el.innerHTML=state.history.slice(0,8).map(x=>`<div class="history-item"><strong>${escapeHtml(x.title)}</strong><span class="muted small">${escapeHtml(x.date)} · ${x.duration} min · +${x.points} points</span></div>`).join('')}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+document.querySelectorAll('.choices').forEach(group=>group.addEventListener('click',e=>{const b=e.target.closest('button.choice');if(!b)return;group.querySelectorAll('.choice').forEach(x=>x.classList.toggle('active',x===b));settings[group.dataset.group]=group.dataset.group==='duration'?Number(b.dataset.value):b.dataset.value;}));
+function makeMission(){
+ stopTimer();completedCurrent=false;document.getElementById('complete').disabled=false;
+ let pool=missions.filter(m=>settings.goal==='Surprise'||m.goal===settings.goal);
+ if(settings.gear==='Aucun')pool=pool.filter(m=>m.title!=='La salle autrement');
+ if(!pool.length)pool=missions.filter(m=>m.goal===settings.goal);
+ let available=pool.filter(m=>!used.includes(m.title));if(!available.length){used=[];available=pool}
+ current=available[Math.floor(Math.random()*available.length)];used.push(current.title);
+ total=settings.duration*60;remaining=total;
+ document.getElementById('missionMeta').textContent='MISSION '+String(state.history.length+1).padStart(2,'0')+' · '+settings.duration+' MIN';
+ document.getElementById('missionTitle').textContent=current.title;
+ document.getElementById('missionIntro').textContent=current.intro;
+ const levelNote=settings.level==='Débutant'?'Débutant : ralentis, réduis l’amplitude et prends des pauses.':settings.level==='Avancé'?'Avancé : augmente légèrement la précision ou la durée, pas le risque.':'Intermédiaire : cherche un rythme régulier et une technique propre.';
+ const gearNote=settings.gear==='Aucun'?'Matériel : aucun.':settings.gear==='Haltères'?'Matériel : haltères facultatifs ; une variante sans matériel reste possible.':'Matériel : adapte la mission aux équipements disponibles et que tu sais utiliser.';
+ document.getElementById('tags').innerHTML=[current.goal,settings.level,gearNote].map((t,i)=>`<span class="tag">${escapeHtml(t)}</span>`).join('')+`<p class="small" style="margin-top:8px">${escapeHtml(levelNote)}</p>`;
+ document.getElementById('steps').innerHTML=current.steps.map((s,i)=>`<div class="step"><b>${i+1}</b><p><strong>${escapeHtml(s[0])}</strong>${escapeHtml(s[1])}</p></div>`).join('');
+ document.getElementById('missionArea').classList.remove('hidden');renderClock();document.getElementById('missionArea').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function renderClock(){let m=Math.floor(remaining/60),s=remaining%60;document.getElementById('clock').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');document.getElementById('timerProgress').style.width=((total-remaining)/total*100)+'%'}
+function stopTimer(){if(timer)clearInterval(timer);timer=null;running=false;const b=document.getElementById('startTimer');if(b)b.textContent='▶ Démarrer'}
+function startTimer(){if(running||remaining<=0)return;running=true;document.getElementById('startTimer').textContent='En cours…';timer=setInterval(()=>{remaining=Math.max(0,remaining-1);renderClock();if(remaining<=0){stopTimer();toast('Temps écoulé. Tu peux terminer ou prolonger ta mission.')}},1000)}
+document.getElementById('generate').addEventListener('click',makeMission);
+document.getElementById('another').addEventListener('click',makeMission);
+document.getElementById('startTimer').addEventListener('click',startTimer);
+document.getElementById('pauseTimer').addEventListener('click',()=>{stopTimer();toast('Chronomètre en pause.')});
+document.getElementById('restartTimer').addEventListener('click',()=>{stopTimer();remaining=total;renderClock()});
+document.getElementById('complete').addEventListener('click',()=>{
+ if(!current||completedCurrent)return;
+ stopTimer();completedCurrent=true;
+ const points=settings.duration===5?25:settings.duration===10?40:55;
+ const today=new Date().toISOString().slice(0,10),yesterday=new Date(Date.now()-86400000).toISOString().slice(0,10);
+ state.streak=state.lastDay===today?state.streak:state.lastDay===yesterday?state.streak+1:1;state.lastDay=today;
+ state.points+=points;state.history.unshift({title:current.title,date:today,duration:settings.duration,points});
+ document.getElementById('complete').disabled=true;save();toast('Mission terminée : +'+points+' points de jeu !');
+});
+document.getElementById('reset').addEventListener('click',()=>{if(confirm('Effacer les points et l’historique de ce navigateur ?')){stopTimer();state={points:0,history:[],lastDay:null,streak:0};used=[];save();toast('Scores réinitialisés.')}});
+function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.remove('hidden');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.add('hidden'),2600)}
+renderStats();renderClock();
+</script>
+</body>
+</html>
